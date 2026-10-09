@@ -2,7 +2,7 @@ import { useState, type ReactNode } from 'react';
 import { ChevronDown, Eye, EyeOff } from 'lucide-react';
 import styles from './Field.module.css';
 
-type InputKind = 'text' | 'url' | 'email' | 'tel' | 'password' | 'textarea' | 'select';
+type InputKind = 'text' | 'url' | 'email' | 'tel' | 'password' | 'textarea' | 'select' | 'date' | 'time';
 
 interface FieldProps {
   id: string;

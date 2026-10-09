@@ -4,7 +4,7 @@ Registro de lo verificado antes de publicar. Fecha: 9 de octubre de 2026.
 
 ## Pruebas automáticas — `npm test`
 
-85 pruebas (Vitest) en 9 archivos:
+109 pruebas (Vitest) en 10 archivos:
 
 | Archivo | Cubre |
 |---|---|
@@ -14,8 +14,9 @@ Registro de lo verificado antes de publicar. Fecha: 9 de octubre de 2026.
 | `formats/wifi.test.ts` | Escape `\ ; , : "`, redes abiertas y ocultas, longitudes WPA/WEP, SSID de 32 bytes |
 | `formats/vcard.test.ts` | vCard 3.0 completa con CRLF, escape, validaciones |
 | `formats/fileLink.test.ts` | Detección de tipo, avisos por servicio, nombres de archivo |
+| `formats/more-formats.test.ts` | Ubicación (Google Maps, `geo:`, dirección, rangos), evento (iCalendar, todo el día, medianoche, fechas imposibles), SMS (`SMSTO:`), redes sociales (9 redes, enlaces pegados) |
 | `design/design.test.ts` | Contraste WCAG, paletas, logotipo → nivel H, preferencias guardadas sin logotipo |
-| `roundtrip.test.ts` | **Ida y vuelta** para los 8 tipos: codificar → dibujar → leer con jsQR → comparar; límite exacto de capacidad en L/M/Q/H |
+| `roundtrip.test.ts` | **Ida y vuelta** para los 12 tipos: codificar → dibujar → leer con jsQR → comparar; límite exacto de capacidad en L/M/Q/H |
 | `utils/filename.test.ts` | Nombres de archivo seguros |
 
 `qrcode-generator` está fijado en la versión 1.5.2, la misma que incluye `qr-code-styling`, para que las pruebas
@@ -23,7 +24,8 @@ reproduzcan exactamente la codificación de producción.
 
 ## Pruebas en navegador (Chrome, compilación de producción)
 
-- **Los 8 tipos:** relleno, lectura verificada y descarga en PNG y SVG con nombre coherente.
+- **Los 12 tipos:** relleno y lectura verificada; descarga en PNG y SVG con nombre coherente (los 8 iniciales con
+  descarga interceptada; ubicación, evento, SMS y redes sociales verificados en pantalla).
 - **Validaciones:** contenido vacío, `javascript:`, capacidad superada (descarga bloqueada), avisos de `http://`, `localhost`.
 - **Diseño:** paletas, formas, logotipo (fuerza H), contraste bajo/crítico (lectura fallida → descarga bloqueada), código invertido (aviso).
 - **Preferencias:** se conservan al recargar, sin logotipo; «Restablecer diseño».
@@ -74,5 +76,6 @@ Desarrollo: `vite`, `@vitejs/plugin-react`, `typescript`, `@types/react(-dom)`, 
 
 ## Pendiente de verificación manual
 
-- Escanear con teléfonos reales (iOS y Android) los 8 tipos, en especial Wi-Fi, vCard con tildes y diseños con logotipo grande.
+- Escanear con teléfonos reales (iOS y Android) los 12 tipos, en especial Wi-Fi, vCard con tildes, eventos
+  (que se añadan a la hora correcta) y diseños con logotipo grande.
 - jsQR es más tolerante que algunas cámaras: una lectura verificada es buena señal, no una garantía.

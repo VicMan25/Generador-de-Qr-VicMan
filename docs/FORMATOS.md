@@ -120,6 +120,64 @@ hexadecimales podría interpretarse como hexadecimal en algunos lectores antiguo
 **Limitaciones:** el QR contiene el enlace, no el archivo (máximo ≈3 KB). No se aloja ningún archivo y no se puede
 comprobar si el enlace es público (sin servidor, CORS lo impide); se indica cómo verificarlo con una ventana de incógnito.
 
+## Ubicación
+
+| | |
+|---|---|
+| Contenido (recomendado) | `https://www.google.com/maps/search/?api=1&query=1.2136%2C-77.2811` |
+| Dirección o lugar | `https://www.google.com/maps/search/?api=1&query=Universidad%20Mariana%2C%20Pasto` |
+| Estándar | `geo:1.2136,-77.2811` (RFC 5870), con nombre opcional: `?q=1.2136,-77.2811(Plaza%20de%20Nari%C3%B1o)` |
+| Entrada | Admite coma decimal (`1,2136`) y pegar el par «lat, lng» en el campo Latitud. |
+| Rechaza | Latitud fuera de −90…90, longitud fuera de −180…180, valores no numéricos, dirección vacía. |
+| Archivo | `qr-ubicacion-<nombre-o-coordenadas>.png` |
+
+**Limitaciones:** `geo:` lo abren las apps de mapas en Android, pero la cámara de iPhone no; por eso el modo por defecto
+es el enlace de Google Maps, que funciona en cualquier teléfono (abre la app o la web de Google Maps al escanear;
+generar el código no contacta con Google). La búsqueda por dirección depende de cómo la interprete Google Maps.
+No se ofrece «usar mi ubicación»: requeriría el permiso de geolocalización, que la política de seguridad del sitio
+desactiva por privacidad.
+
+## Evento
+
+| | |
+|---|---|
+| Contenido | Bloque iCalendar (RFC 5545) `BEGIN:VEVENT` … `END:VEVENT` con CRLF |
+| Propiedades | `SUMMARY`, `DTSTART`, `DTEND`, `LOCATION`, `DESCRIPTION` (solo las que tienen valor). |
+| Horas | Hora local «flotante» (`20261020T143000`, sin `Z`): el evento aparece a esa hora en el reloj de quien escanea. Sin hora de fin, dura 1 hora. |
+| Todo el día | `DTSTART;VALUE=DATE:20261020` y `DTEND` = día siguiente al último (exclusivo, como exige el estándar). |
+| Escape | `\` → `\`, `;` → `\;`, `,` → `\,`, salto de línea → `\n`. |
+| Rechaza | Sin título o fecha de inicio; fechas imposibles (30 de febrero); fin anterior o igual al inicio. |
+| Archivo | `qr-evento-<título>.png` |
+
+**Limitaciones:** la cámara de iPhone y Google Lens ofrecen «Añadir al calendario»; otros lectores pueden mostrar
+solo el texto. Sin zona horaria, un evento en línea con asistentes de otros países se verá a la misma hora local en
+cada país. No se incluyen recordatorios ni repeticiones (no los soportan bien los lectores).
+
+## SMS
+
+| | |
+|---|---|
+| Contenido | `SMSTO:+573001234567:Mensaje` |
+| Codificación | Número internacional como en Teléfono. El mensaje va tal cual (todo lo que sigue al segundo `:` es texto). Sin mensaje: `SMSTO:+57…:`. |
+| Archivo | `qr-sms-<número>.png` |
+
+**Limitaciones:** abre la app de mensajes con todo preparado; la persona decide si lo envía y el operador puede cobrarlo.
+Se eligió `SMSTO:` frente a `sms:` (RFC 5724) porque es el formato más reconocido por lectores de QR, incluida la
+cámara de iOS. Un SMS admite 160 caracteres GSM (70 si lleva tildes o emojis); más largo se divide en varios.
+
+## Redes sociales
+
+| | |
+|---|---|
+| Contenido | Enlace al perfil: Instagram, TikTok, Facebook, X, LinkedIn, YouTube, Threads, Telegram o GitHub. |
+| Entrada | Usuario con o sin `@` (p. ej. `@mi.cuenta` → `https://www.instagram.com/mi.cuenta/`) o el enlace completo del perfil. |
+| Rechaza | Usuario vacío, con espacios o con caracteres que esa red no permite; enlaces de otra red distinta de la elegida. |
+| Archivo | `qr-<red>-<usuario>.png` |
+
+**Limitaciones:** un código QR contiene un solo enlace. Para reunir varias redes hace falta una página que las agrupe
+(un servicio de «enlaces en la biografía» o una web propia) y generar el QR con su dirección; VicMan QR no aloja esas
+páginas. No se comprueba que el perfil exista. Los formatos de dirección de cada red pueden cambiar con el tiempo.
+
 ## Personalización y exportación
 
 | Opción | Detalle |

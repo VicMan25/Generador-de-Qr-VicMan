@@ -24,6 +24,7 @@ cualquier cambio de tecnología o arquitectura se justifica y se anota aquí.
 | 6 | Generador y demostración de portada cargados bajo demanda | JS inicial de 140 a 115 KB gzip. |
 | 6 | Script de tema movido a `public/theme-init.js`; cabeceras CSP y de seguridad en `vercel.json` | Política CSP estricta sin scripts en línea. |
 | 7 | Node 24.x (`engines` y `.nvmrc`) | React Router exige Node ≥ 22.22 y Vercel retiró Node 20 el 1/10/2026. |
+| 8 | Ubicación, evento, SMS y redes sociales implementados (antes «Más adelante») | Petición del autor tras la Fase 7. Redes sociales: un perfil por código, porque un QR solo contiene un enlace. |
 
 ## Estado
 
@@ -51,6 +52,10 @@ autor (ver `docs/DESPLIEGUE.md`).
 | Wi-Fi | `WIFI:T:WPA;S:…;P:…;H:false;;` (escapar `\ ; , : "`) |
 | vCard | vCard 3.0, CRLF |
 | Archivo | URL pública del archivo + guía de permisos |
+| Ubicación | Enlace de Google Maps (coordenadas o dirección) o `geo:lat,lng` |
+| Evento | iCalendar `BEGIN:VEVENT` con hora local |
+| SMS | `SMSTO:+57…:mensaje` |
+| Redes sociales | Enlace al perfil a partir del usuario (9 redes) |
 
 ## Limitación de archivos
 

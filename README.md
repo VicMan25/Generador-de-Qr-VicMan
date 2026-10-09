@@ -4,7 +4,8 @@ Estudio de códigos QR que funciona completamente en el navegador: sin registro,
 
 ## Funcionalidades
 
-- **8 tipos de QR:** enlace web, texto, correo, teléfono, WhatsApp, Wi-Fi, contacto (vCard 3.0) y documento por URL.
+- **12 tipos de QR:** enlace web, texto, correo, teléfono, WhatsApp, Wi-Fi, contacto (vCard 3.0), documento por URL,
+  ubicación, evento de calendario, SMS y redes sociales.
 - **Validación en vivo** con mensajes claros y avisos de seguridad (esquemas peligrosos, `http://`, contraseñas legibles…).
 - **Personalización:** colores con control de contraste, 6 estilos de módulos, esquinas, logotipo y nivel de corrección de errores.
 - **Comprobación de lectura:** cada código se vuelve a leer en el navegador y se compara con el contenido antes de descargarlo.
@@ -48,7 +49,7 @@ docs/                  Plan, formatos, pruebas y despliegue
 public/brand/          Espacio para el logotipo oficial
 ```
 
-Para añadir un tipo de QR (ubicación, SMS, evento…): crea su archivo en `src/features/qr/formats/`, con `fields`,
+Para añadir un tipo de QR (p. ej. criptomonedas o pagos): crea su archivo en `src/features/qr/formats/`, con `fields`,
 `build()` y `fileName()`, y asígnalo como `definition` en `registry.ts`. La interfaz se genera sola.
 
 ## Documentación

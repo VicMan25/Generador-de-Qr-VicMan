@@ -11,7 +11,6 @@ import {
   UserX,
 } from 'lucide-react';
 import { Button } from '../components/ui/Button';
-import { Badge } from '../components/ui/Badge';
 import { QR_FORMATS, QR_GROUP_LABELS, type QrFormatGroup } from '../features/qr/formats/registry';
 import styles from './HomePage.module.css';
 import { useDocumentTitle } from '../utils/useDocumentTitle';
@@ -19,7 +18,7 @@ import { useDocumentTitle } from '../utils/useDocumentTitle';
 // La demostración usa el motor QR; se carga aparte para que la portada aparezca antes.
 const HeroDemo = lazy(() => import('./HeroDemo').then((module) => ({ default: module.HeroDemo })));
 
-const GROUP_ORDER: QrFormatGroup[] = ['essentials', 'files', 'upcoming'];
+const GROUP_ORDER: QrFormatGroup[] = ['essentials', 'files', 'more'];
 
 const STEPS = [
   {
@@ -102,35 +101,18 @@ export function HomePage() {
               <ul className={styles.cards}>
                 {QR_FORMATS.filter((format) => format.group === group).map((format) => {
                   const Icon = format.icon;
-                  const body = (
-                    <>
-                      <span className={styles.cardIcon} aria-hidden="true">
-                        <Icon size={22} />
-                      </span>
-                      <span className={styles.cardText}>
-                        <span className={styles.cardTitle}>{format.label}</span>
-                        <span className={styles.cardDescription}>{format.description}</span>
-                      </span>
-                      {format.definition ? (
-                        <ArrowRight className={styles.cardArrow} size={18} aria-hidden="true" />
-                      ) : (
-                        <span className={styles.cardStatus}>
-                          <Badge>Próximamente</Badge>
-                        </span>
-                      )}
-                    </>
-                  );
                   return (
                     <li key={format.id}>
-                      {format.definition ? (
-                        <Link to={`/crear/${format.id}`} className={styles.card}>
-                          {body}
-                        </Link>
-                      ) : (
-                        <div className={`${styles.card} ${styles.cardSoon}`} aria-disabled="true">
-                          {body}
-                        </div>
-                      )}
+                      <Link to={`/crear/${format.id}`} className={styles.card}>
+                        <span className={styles.cardIcon} aria-hidden="true">
+                          <Icon size={22} />
+                        </span>
+                        <span className={styles.cardText}>
+                          <span className={styles.cardTitle}>{format.label}</span>
+                          <span className={styles.cardDescription}>{format.description}</span>
+                        </span>
+                        <ArrowRight className={styles.cardArrow} size={18} aria-hidden="true" />
+                      </Link>
                     </li>
                   );
                 })}

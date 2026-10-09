@@ -195,7 +195,6 @@
   animation-delay: -2s;
 }
 
-
 @keyframes float {
   0%,
   100% {
@@ -288,16 +287,6 @@ a.card:hover {
   box-shadow: var(--shadow-flat);
 }
 
-.cardSoon {
-  border-style: dashed;
-  border-color: var(--color-border);
-}
-
-.cardSoon .cardIcon,
-.cardSoon .cardText {
-  opacity: 0.65;
-}
-
 .cardIcon {
   grid-area: icon;
   display: inline-grid;
@@ -308,11 +297,6 @@ a.card:hover {
   border-radius: var(--radius-md);
   background: var(--color-accent);
   color: var(--color-on-accent);
-}
-
-.cardSoon .cardIcon {
-  background: var(--color-surface-sunken);
-  color: var(--color-text);
 }
 
 .cardText {
@@ -333,11 +317,6 @@ a.card:hover {
   color: var(--color-text-muted);
   font-size: var(--text-sm);
   line-height: 1.5;
-}
-
-.cardStatus {
-  grid-area: status;
-  justify-self: end;
 }
 
 .cardArrow {

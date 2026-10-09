@@ -7,14 +7,11 @@ import styles from './TypeSelector.module.css';
  * Escritorio: lista vertical. Tableta y móvil: fila de chips con desplazamiento horizontal.
  */
 export function TypeSelector({ activeId }: { activeId: QrFormatId }) {
-  // Solo los tipos operativos; los futuros aparecen en la portada como "Próximamente".
-  const formats = QR_FORMATS.filter((format) => format.definition);
-
   return (
     <nav className={styles.selector} aria-label="Tipos de QR">
       <p className={`eyebrow ${styles.heading}`}>Tipo de QR</p>
       <ul className={styles.list}>
-        {formats.map((format) => {
+        {QR_FORMATS.map((format) => {
           const Icon = format.icon;
           return (
             <li key={format.id}>

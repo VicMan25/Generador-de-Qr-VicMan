@@ -4,7 +4,17 @@ export type FieldValue = string | boolean;
 export type FormValues = Record<string, FieldValue>;
 export type FieldErrors = Record<string, string>;
 
-export type FieldKind = 'text' | 'url' | 'textarea' | 'email' | 'tel' | 'password' | 'select' | 'checkbox';
+export type FieldKind =
+  | 'text'
+  | 'url'
+  | 'textarea'
+  | 'email'
+  | 'tel'
+  | 'password'
+  | 'select'
+  | 'checkbox'
+  | 'date'
+  | 'time';
 
 export interface FieldDef {
   name: string;

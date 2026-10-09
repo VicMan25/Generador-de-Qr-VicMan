@@ -22,13 +22,17 @@ import { whatsappFormat } from './whatsapp';
 import { wifiFormat } from './wifi';
 import { vcardFormat } from './vcard';
 import { fileLinkFormat } from './fileLink';
+import { locationFormat } from './location';
+import { eventFormat } from './event';
+import { smsFormat } from './sms';
+import { socialFormat } from './social';
 
 /**
  * Registro central de tipos de QR.
  *
- * Cada tipo declara sus metadatos aquí. Los tipos operativos añaden `definition`
- * (campos, validación y codificación); los demás se muestran como "Próximamente".
- * La interfaz (selector, tarjetas de la portada, rutas) se construye solo a partir de este registro.
+ * Cada tipo declara sus metadatos y su `definition` (campos, validación y codificación).
+ * La interfaz (selector, tarjetas de la portada, rutas) se construye solo a partir de este registro:
+ * para añadir un tipo basta con crear su archivo en esta carpeta y registrarlo aquí.
  */
 
 export type QrFormatId =
@@ -45,7 +49,7 @@ export type QrFormatId =
   | 'sms'
   | 'social';
 
-export type QrFormatGroup = 'essentials' | 'files' | 'upcoming';
+export type QrFormatGroup = 'essentials' | 'files' | 'more';
 
 export interface QrFormatMeta {
   id: QrFormatId;
@@ -53,8 +57,7 @@ export interface QrFormatMeta {
   description: string;
   icon: LucideIcon;
   group: QrFormatGroup;
-  /** Presente solo cuando el generador de este tipo está operativo. */
-  definition?: QrFormatDefinition;
+  definition: QrFormatDefinition;
 }
 
 export const QR_FORMATS: readonly QrFormatMeta[] = [
@@ -125,37 +128,41 @@ export const QR_FORMATS: readonly QrFormatMeta[] = [
   {
     id: 'location',
     label: 'Ubicación',
-    description: 'Coordenadas que se abren en la app de mapas.',
+    description: 'Un punto en el mapa o una dirección que se abre en la app de mapas.',
     icon: MapPin,
-    group: 'upcoming',
+    group: 'more',
+    definition: locationFormat,
   },
   {
     id: 'event',
     label: 'Evento',
     description: 'Agrega una cita al calendario del dispositivo.',
     icon: CalendarDays,
-    group: 'upcoming',
+    group: 'more',
+    definition: eventFormat,
   },
   {
     id: 'sms',
     label: 'SMS',
     description: 'Un mensaje de texto listo para enviar.',
     icon: MessageSquareText,
-    group: 'upcoming',
+    group: 'more',
+    definition: smsFormat,
   },
   {
     id: 'social',
     label: 'Redes sociales',
-    description: 'Tus perfiles en un único código.',
+    description: 'El enlace a tu perfil de Instagram, TikTok, LinkedIn y más.',
     icon: Share2,
-    group: 'upcoming',
+    group: 'more',
+    definition: socialFormat,
   },
 ];
 
 export const QR_GROUP_LABELS: Record<QrFormatGroup, string> = {
   essentials: 'Esenciales',
   files: 'Documentos y archivos',
-  upcoming: 'Más adelante',
+  more: 'Más formatos',
 };
 
 export function getFormat(id: string | undefined): QrFormatMeta | undefined {

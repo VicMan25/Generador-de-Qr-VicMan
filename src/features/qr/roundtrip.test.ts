@@ -18,6 +18,10 @@ import { whatsappFormat } from './formats/whatsapp';
 import { wifiFormat } from './formats/wifi';
 import { vcardFormat } from './formats/vcard';
 import { fileLinkFormat } from './formats/fileLink';
+import { locationFormat } from './formats/location';
+import { eventFormat } from './formats/event';
+import { smsFormat } from './formats/sms';
+import { socialFormat } from './formats/social';
 
 function encodeAndDecode(payload: string, level: ErrorCorrectionLevel = DEFAULT_DESIGN.errorCorrection): string | null {
   const qr = qrcode(0, level);
@@ -98,6 +102,21 @@ describe('ida y vuelta: lo leído es idéntico a lo introducido', () => {
       }),
     ],
     ['Archivo', fileLinkFormat.build({ url: 'https://drive.google.com/file/d/1AbC-xyz/view?usp=sharing' })],
+    ['Ubicación', locationFormat.build({ ...locationFormat.defaults, latitude: '1.2136', longitude: '-77.2811' })],
+    ['Ubicación geo:', locationFormat.build({ ...locationFormat.defaults, mode: 'geo', latitude: '1.2136', longitude: '-77.2811', label: 'Plaza de Nariño' })],
+    [
+      'Evento',
+      eventFormat.build({
+        ...eventFormat.defaults,
+        title: 'Taller; nivel 1, básico 🎓',
+        startDate: '2026-10-20',
+        startTime: '09:00',
+        location: 'Aula 3, Bloque B',
+        description: 'Traer portátil\nCupos limitados',
+      }),
+    ],
+    ['SMS', smsFormat.build({ country: '57', number: '3001234567', message: 'INSCRIBIR: 2026 ñ 😊' })],
+    ['Red social', socialFormat.build({ network: 'instagram', username: '@mi.cuenta' })],
   ] as const;
 
   it.each(structured)('%s', (_label, result) => {
