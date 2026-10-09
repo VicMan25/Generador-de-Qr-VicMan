@@ -1,0 +1,20 @@
+.form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-5) var(--space-4);
+}
+
+.full {
+  grid-column: 1 / -1;
+}
+
+.half {
+  grid-column: span 1;
+}
+
+/* En pantallas estrechas todos los campos ocupan la fila completa. */
+@media (max-width: 559px), (min-width: 1100px) and (max-width: 1239px) {
+  .half {
+    grid-column: 1 / -1;
+  }
+}

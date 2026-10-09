@@ -1,0 +1,61 @@
+.bar {
+  display: none;
+}
+
+@media (max-width: 699px) {
+  /* Reserva espacio al final del documento para que la barra no tape el pie de página. */
+  :global(#root):has(.bar) {
+    padding-bottom: calc(76px + env(safe-area-inset-bottom));
+  }
+
+  .bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--gutter);
+    padding-bottom: calc(var(--space-3) + env(safe-area-inset-bottom));
+    border-top: var(--border-width) solid var(--color-border-strong);
+    background: color-mix(in srgb, var(--color-surface) 92%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
+
+.thumb {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  overflow: hidden;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #ffffff;
+}
+
+.thumb:disabled {
+  cursor: default;
+}
+
+.thumb img {
+  width: 100%;
+  height: 100%;
+}
+
+.thumbEmpty {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--color-surface-sunken);
+}
+
+.text {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--text-sm);
+  font-weight: 600;
+}

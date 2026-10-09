@@ -1,0 +1,119 @@
+.group {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.group:disabled {
+  opacity: 0.55;
+}
+
+.legend {
+  margin-bottom: var(--space-2);
+  padding: 0;
+  font-weight: 600;
+  font-size: var(--text-sm);
+}
+
+.options {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.pills {
+  grid-template-columns: repeat(auto-fit, minmax(64px, 1fr));
+}
+
+.tiles {
+  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+}
+
+.option {
+  position: relative;
+  cursor: pointer;
+}
+
+.group:disabled .option {
+  cursor: not-allowed;
+}
+
+.input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.face {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  height: 100%;
+  min-height: 44px;
+  padding: var(--space-2) var(--space-3);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  text-align: center;
+  line-height: 1.25;
+  transition:
+    border-color var(--duration-fast),
+    background-color var(--duration-fast),
+    color var(--duration-fast);
+}
+
+.option:hover .face {
+  border-color: var(--color-text-muted);
+  color: var(--color-text);
+}
+
+.input:checked + .face {
+  border-color: var(--color-border-strong);
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: var(--shadow-flat-sm);
+}
+
+.input:focus-visible + .face {
+  outline: 2.5px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.visual {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  background: #ffffff;
+  color: #12141a;
+}
+
+.visual svg {
+  width: 32px;
+  height: 32px;
+}
+
+.input:checked + .face .visual {
+  outline: 2px solid var(--color-accent);
+}
+
+.label {
+  font-size: var(--text-xs);
+}
+
+.pills .label {
+  font-size: var(--text-sm);
+}
+
+.hint {
+  margin-top: var(--space-2);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
