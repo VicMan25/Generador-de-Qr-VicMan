@@ -182,12 +182,11 @@ export function QrPanel(props: QrPanelProps) {
         )}
       </div>
 
-      {previewPayload && (
-        <details className={styles.inspector}>
-          <summary>Ver contenido codificado</summary>
-          <pre className={styles.payload}>{previewPayload}</pre>
-        </details>
-      )}
+      {/* Siempre presente para que el panel no cambie de alto al aparecer o desaparecer el contenido. */}
+      <details className={styles.inspector}>
+        <summary>Ver contenido codificado</summary>
+        <pre className={styles.payload}>{previewPayload ?? 'Sin contenido todavía.'}</pre>
+      </details>
     </div>
   );
 }

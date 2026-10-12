@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { QrDesign } from '../design/defaults';
 import { renderQr } from '../export/render';
 import { verifyImage } from '../export/verify';
@@ -15,23 +15,33 @@ const CHECK_SIZE = 480;
 export function useQrCheck(payload: string | null, design: QrDesign) {
   const [status, setStatus] = useState<CheckStatus>('idle');
   const [imageUrl, setImageUrl] = useState<string | null>(null);
+  // La miniatura anterior se libera solo cuando la nueva la sustituye, para que no se vea rota entretanto.
+  const urlRef = useRef<string | null>(null);
+
+  const replaceImage = (url: string | null) => {
+    if (urlRef.current) URL.revokeObjectURL(urlRef.current);
+    urlRef.current = url;
+    setImageUrl(url);
+  };
+
+  useEffect(() => () => {
+    if (urlRef.current) URL.revokeObjectURL(urlRef.current);
+  }, []);
 
   useEffect(() => {
     if (!payload) {
       setStatus('idle');
-      setImageUrl(null);
+      replaceImage(null);
       return;
     }
 
     let cancelled = false;
-    let url: string | null = null;
     setStatus('checking');
 
     renderQr(payload, design, CHECK_SIZE, 'png')
       .then(async (blob) => {
         if (cancelled) return;
-        url = URL.createObjectURL(blob);
-        setImageUrl(url);
+        replaceImage(URL.createObjectURL(blob));
         const outcome = await verifyImage(blob, payload);
         if (!cancelled) setStatus(outcome);
       })
@@ -41,7 +51,6 @@ export function useQrCheck(payload: string | null, design: QrDesign) {
 
     return () => {
       cancelled = true;
-      if (url) URL.revokeObjectURL(url);
     };
   }, [payload, design]);
 

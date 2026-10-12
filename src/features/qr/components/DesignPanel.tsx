@@ -14,6 +14,7 @@ import {
   type QrDesign,
 } from '../design/defaults';
 import { assessReadability, formatRatio } from '../design/readability';
+import { useDebouncedValue } from '../hooks/useDebouncedValue';
 import { CornerCenterSwatch, CornerFrameSwatch, DotSwatch } from './StyleSwatch';
 import { LogoPicker } from './LogoPicker';
 import styles from './DesignPanel.module.css';
@@ -25,7 +26,9 @@ interface DesignPanelProps {
 }
 
 export function DesignPanel({ design, onChange, onReset }: DesignPanelProps) {
-  const readability = assessReadability(design);
+  // Los avisos de contraste esperan a que el color deje de cambiar (p. ej. al arrastrar el selector),
+  // para que las secciones de abajo no salten mientras se elige.
+  const readability = assessReadability(useDebouncedValue(design, 350));
   const isDefault = (Object.keys(DEFAULT_DESIGN) as (keyof QrDesign)[]).every(
     (key) => design[key] === DEFAULT_DESIGN[key],
   );

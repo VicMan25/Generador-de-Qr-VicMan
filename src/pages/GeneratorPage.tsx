@@ -90,7 +90,14 @@ export function GeneratorPage() {
 
   const values = (format && valuesByFormat[format.id]) ?? definition?.defaults;
   const result = useMemo(() => (definition && values ? definition.build(values) : null), [definition, values]);
+  // Avisos y errores siguen al resultado «asentado» (cuando se deja de escribir) para que el formulario
+  // no crezca y encoja con cada tecla. Se asocia al tipo para no mostrar avisos de otro tipo al cambiar.
+  const resultEntry = useMemo(() => ({ formatId: format?.id, result }), [format?.id, result]);
+  const settledEntry = useDebouncedValue(resultEntry, 450);
+  const settledResult = settledEntry.formatId === format?.id ? settledEntry.result : result;
   const capacity = result?.ok ? getCapacity(result.payload, effectiveErrorCorrection(design)) : null;
+  // El medidor de capacidad se muestra siempre (vacío si no hay contenido) para que el panel no cambie de alto.
+  const capacityDisplay = capacity ?? getCapacity('', effectiveErrorCorrection(design));
   const payload = result?.ok && !capacity?.exceeded ? result.payload : null;
   const debouncedPayload = useDebouncedValue(payload, 250);
   const previewPayload = payload === null ? null : debouncedPayload;
@@ -140,9 +147,13 @@ export function GeneratorPage() {
 
   const Icon = format.icon;
   const touched = touchedByFormat[format.id] ?? [];
+  // Un error desaparece en cuanto se corrige, pero solo aparece cuando se deja de escribir.
+  const settledErrors = settledResult && !settledResult.ok ? settledResult.errors : {};
   const visibleErrors: FieldErrors =
     result && !result.ok
-      ? Object.fromEntries(Object.entries(result.errors).filter(([field]) => touched.includes(field)))
+      ? Object.fromEntries(
+          Object.entries(result.errors).filter(([field]) => touched.includes(field) && settledErrors[field]),
+        )
       : {};
   const hasContent = Object.keys(values).some((key) => values[key] !== definition.defaults[key]);
 
@@ -243,20 +254,18 @@ export function GeneratorPage() {
               )}
 
               <div className={styles.notices}>
-                {[...(result?.notices ?? []), ...definition.notices].map((notice) => (
+                {[...(settledResult?.notices ?? []), ...definition.notices].map((notice) => (
                   <Alert key={notice.text} tone={notice.tone}>
                     {notice.text}
                   </Alert>
                 ))}
               </div>
 
-              {hasContent && (
-                <div className={styles.formActions}>
-                  <Button variant="ghost" icon={<RotateCcw />} onClick={handleClear}>
-                    Borrar contenido
-                  </Button>
-                </div>
-              )}
+              <div className={styles.formActions}>
+                <Button variant="ghost" icon={<RotateCcw />} onClick={handleClear} disabled={!hasContent}>
+                  Borrar contenido
+                </Button>
+              </div>
             </div>
         </>
       </section>
@@ -266,7 +275,7 @@ export function GeneratorPage() {
             previewPayload={previewPayload}
             payload={payload}
             design={design}
-            capacity={capacity}
+            capacity={capacityDisplay}
             checkStatus={check.status}
             exportSettings={exportSettings}
             onExportChange={handleExportChange}
